@@ -1,80 +1,64 @@
+import { I_VitalData } from "../../interfaces/vitalData.interfaces";
 import VitalDataRepository from "../repositories/vitalData.repository";
 
 export default class VitalDataController {
   private vitalDataRepository = new VitalDataRepository();
 
-  create(vital: any): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const createdVital = await this.vitalDataRepository.create(vital);
-        resolve(createdVital);
-      } catch (err) {
-        reject(err);
-      }
-    });
+  async create(vital: I_VitalData): Promise<I_VitalData> {
+    const createdVital = await this.vitalDataRepository.create(vital);
+
+    return createdVital;
   }
 
-  getById(vitalDataId: string): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const vitalData = await this.vitalDataRepository.findById(vitalDataId);
-        if (!vitalData) {
-          return reject(new Error("Vital data not found"));
-        }
-        resolve(vitalData);
-      } catch (err) {
-        reject(err);
-      }
-    });
+  async getById(vitalDataId: string): Promise<I_VitalData> {
+    const vitalData = await this.vitalDataRepository.findById(vitalDataId);
+    
+    if (!vitalData) {
+      throw new Error("Vital data not found");
+    }
+
+    return vitalData;
   }
 
-  getAll(): Promise<any[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const vitalDataList = await this.vitalDataRepository.findAll();
-        resolve(vitalDataList);
-      } catch (err) {
-        reject(err);
-      }
-    });
+  async getAll(): Promise<I_VitalData[]> {
+    const vitalDataList = await this.vitalDataRepository.findAll();
+
+    return vitalDataList;
   }
 
-  getByPatientId(patientId: string): Promise<any[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const vitalDataList = await this.vitalDataRepository.findByPatientId(patientId);
-        resolve(vitalDataList);
-      } catch (err) {
-        reject(err);
-      }
-    });
+  async getByPatientId(patientId: string): Promise<I_VitalData[]> {
+    const vitalDataList = await this.vitalDataRepository.findByPatientId(
+      patientId
+    );
+
+    return vitalDataList;
   }
 
-  update(vitalDataId: string, vitalData: any): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const updatedVitalData = await this.vitalDataRepository.updateById(vitalDataId, vitalData);
-        if (!updatedVitalData) {
-          return reject(new Error("Vital data not found"));
-        }
-        resolve(updatedVitalData);
-      } catch (err) {
-        reject(err);
-      }
-    });
+  async update(
+    vitalDataId: string,
+    vitalData: I_VitalData
+  ): Promise<I_VitalData> {
+    const updatedVitalData = await this.vitalDataRepository.updateById(
+      vitalDataId,
+      vitalData
+    );
+
+    if (!updatedVitalData) {
+      throw new Error("Vital data not found");
+    }
+
+    return updatedVitalData;
   }
 
-  delete(vitalDataId: string): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const deletedVitalData = await this.vitalDataRepository.deleteById(vitalDataId);
-        if (!deletedVitalData) {
-          return reject(new Error("Vital data not found"));
-        }
-        resolve({ message: "Vital data deleted successfully" });
-      } catch (err) {
-        reject(err);
-      }
-    });
+  async delete(vitalDataId: string): Promise<{ message: string }> {
+    const deletedVitalData = await this.vitalDataRepository.deleteById(
+      vitalDataId
+    );
+
+    if (!deletedVitalData) {
+      throw new Error("Vital data not found");
+    }
+
+    return { message: "Vital data deleted successfully" };
   }
 }

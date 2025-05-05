@@ -1,0 +1,643 @@
+openapi: 3.0.0
+info:
+  title: VitalCare API
+  version: 1.0.0
+  description: API for managing pediatric patient data
+
+paths:
+  /api/patient:
+    get:
+      summary: Fetch all patients
+      tags:
+        - Patient
+      responses:
+        "200":
+          description: List of all patients
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        birthDate:
+                          type: string
+                          format: date
+                        responsibleRg:
+                          type: string
+    post:
+      summary: Create a new patient
+      tags:
+        - Patient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                birthDate:
+                  type: string
+                  format: date
+                responsibleRg:
+                  type: string
+              required:
+                - name
+                - birthDate
+                - responsibleRg
+      responses:
+        "201":
+          description: Patient created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      birthDate:
+                        type: string
+                        format: date
+                      responsibleRg:
+                        type: string
+
+  /api/patient/{id}:
+    get:
+      summary: Fetch a patient by ID
+      tags:
+        - Patient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the patient to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Patient data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      birthDate:
+                        type: string
+                        format: date
+                      responsibleRg:
+                        type: string
+        "404":
+          description: Patient not found
+    put:
+      summary: Update a patient by ID
+      tags:
+        - Patient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the patient to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                birthDate:
+                  type: string
+                  format: date
+                responsibleRg:
+                  type: string
+      responses:
+        "200":
+          description: Patient updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      birthDate:
+                        type: string
+                        format: date
+                      responsibleRg:
+                        type: string
+        "404":
+          description: Patient not found
+    delete:
+      summary: Delete a patient by ID
+      tags:
+        - Patient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the patient to delete
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Patient deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  message:
+                    type: string
+                    example: Patient deleted successfully
+        "404":
+          description: Patient not found
+
+  /api/user:
+    get:
+      summary: Fetch all users
+      tags:
+        - User
+      responses:
+        "200":
+          description: List of all users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+        "500":
+          description: Internal server error
+    post:
+      summary: Create a new user
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  data:
+                    $ref: "#/components/schemas/User"
+        "400":
+          description: Bad request
+
+  /api/user/{id}:
+    get:
+      summary: Fetch a user by ID
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  data:
+                    $ref: "#/components/schemas/User"
+        "404":
+          description: User not found
+    put:
+      summary: Update a user by ID
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  data:
+                    $ref: "#/components/schemas/User"
+        "404":
+          description: User not found
+    delete:
+      summary: Delete a user by ID
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user to delete
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  message:
+                    type: string
+                    example: User deleted successfully
+        "404":
+          description: User not found
+
+  /api/user/email/{email}:
+    get:
+      summary: Fetch a user by email
+      tags:
+        - User
+      parameters:
+        - name: email
+          in: path
+          required: true
+          description: Email of the user to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  data:
+                    $ref: "#/components/schemas/User"
+        "404":
+          description: User not found
+
+  /api/vital:
+    get:
+      summary: Fetch all vital data
+      tags:
+        - VitalData
+      responses:
+        "200":
+          description: List of all vital data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VitalData'
+        "500":
+          description: Internal server error
+    post:
+      summary: Create new vital data
+      tags:
+        - VitalData
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VitalData'
+      responses:
+        "201":
+          description: Vital data created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  data:
+                    $ref: '#/components/schemas/VitalData'
+        "400":
+          description: Bad request
+
+  /api/vital/{id}:
+    get:
+      summary: Fetch vital data by ID
+      tags:
+        - VitalData
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the vital data to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Vital data object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  data:
+                    $ref: '#/components/schemas/VitalData'
+        "404":
+          description: Vital data not found
+    put:
+      summary: Update vital data by ID
+      tags:
+        - VitalData
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the vital data to update
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VitalData'
+      responses:
+        "200":
+          description: Vital data updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  data:
+                    $ref: '#/components/schemas/VitalData'
+        "404":
+          description: Vital data not found
+    delete:
+      summary: Delete vital data by ID
+      tags:
+        - VitalData
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the vital data to delete
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Vital data deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  message:
+                    type: string
+                    example: Vital data deleted successfully
+        "404":
+          description: Vital data not found
+
+  /api/vital/patient/{patientId}:
+    get:
+      summary: Fetch vital data by patient ID
+      tags:
+        - VitalData
+      parameters:
+        - name: patientId
+          in: path
+          required: true
+          description: ID of the patient to retrieve vital data for
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of vital data for the patient
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/VitalData'
+        "404":
+          description: Vital data not found
+
+components:
+  schemas:
+    Patient:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "64a7b2f5e4b0c123456789ab"
+        name:
+          type: string
+          example: "John Doe"
+        birthDate:
+          type: string
+          format: date
+          example: "2010-05-15"
+        responsibleRg:
+          type: string
+          example: "123456789"
+      required:
+        - name
+        - birthDate
+        - responsibleRg
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "64a7b2f5e4b0c123456789ab"
+        name:
+          type: string
+          example: "Jane Doe"
+        email:
+          type: string
+          example: "jane.doe@example.com"
+        password:
+          type: string
+          example: "hashed_password"
+        role:
+          type: string
+          example: "admin"
+        phone:
+          type: string
+          example: "+123456789"
+        cpf:
+          type: string
+          example: "12345678900"
+        rg:
+          type: string
+          example: "123456789"
+        crm:
+          type: string
+          example: "CRM12345"
+        address:
+          type: object
+          properties:
+            street:
+              type: string
+              example: "123 Main St"
+            number:
+              type: string
+              example: "456"
+            complement:
+              type: string
+              example: "Apt 789"
+            neighborhood:
+              type: string
+              example: "Downtown"
+            city:
+              type: string
+              example: "New York"
+            state:
+              type: string
+              example: "NY"
+            cep:
+              type: string
+              example: "10001"
+      required:
+        - name
+        - email
+        - password
+        - role
+        - phone
+        - cpf
+        - rg
+
+    VitalData:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "64a7b2f5e4b0c123456789ab"
+        temperature:
+          type: number
+          example: 36.5
+        heartRate:
+          type: number
+          example: 72
+        oxygenLevel:
+          type: number
+          example: 98
+        hydration:
+          type: number
+          example: 70
+        respiration:
+          type: number
+          example: 16
+        patientId:
+          type: string
+          example: "64a7b2f5e4b0c123456789ac"
+      required:
+        - temperature
+        - heartRate
+        - oxygenLevel
+        - hydration
+        - respiration
+        - patientId

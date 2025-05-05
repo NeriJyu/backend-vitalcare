@@ -11,11 +11,16 @@ docker-compose up -d
 npm run dev
 ```
 
+## Documentação
+[localhost:3000/api/docs](localhost:3000/api/docs)
+
 ## Executando simulador
 
 1. Para clonar o banco de dados: docker exec mongodb mongorestore /data/backup
 2. Abrir o [wokwi](https://wokwi.com/projects/429772766362621953)
 3. Executar
-4. A cada 30 segundos os dados são salvos no MongoDB e cada 1 segundo os dados são enviados para o nosso front-end
+4. Criar Patient
+5. Copiar ID de Patient e colocar no WokWi
+6. A cada 30 segundos os dados são salvos no MongoDB e cada 1 segundo os dados são enviados para o nosso front-end
 
 Certifique-se de ter o Node.js e Docker instalado em sua máquina antes de executar esses comandos.

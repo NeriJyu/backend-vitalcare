@@ -17,7 +17,6 @@ client.on("message", async (topic, message) => {
   try {
     const data: I_VitalData = JSON.parse(message.toString());
     buffer.push(data);
-
   } catch (err) {
     console.error("Error processing MQTT message", err);
   }
