@@ -8,19 +8,23 @@ export default class UserRepository {
   }
 
   async findById(userId: string): Promise<I_User | null> {
-    return await User.findById(userId).exec();
+    return await User.findById(userId).select("-password").exec();
   }
 
   async findByEmail(email: string): Promise<I_User | null> {
+    return await User.findOne({ email }).select("-password").exec();
+  }
+
+  async findByEmailWithPassword(email: string): Promise<I_User | null> {
     return await User.findOne({ email }).exec();
   }
 
   async findByCrm(crm: string): Promise<I_User | null> {
-    return await User.findOne({ crm }).exec();
+    return await User.findOne({ crm }).select("-password").exec();
   }
 
   async findAll(): Promise<I_User[]> {
-    return await User.find().exec();
+    return await User.find().select("-password").exec();
   }
 
   async updateById(
@@ -29,10 +33,12 @@ export default class UserRepository {
   ): Promise<I_User | null> {
     return await User.findByIdAndUpdate(userId, updateData, {
       new: true,
-    }).exec();
+    })
+      .select("-password")
+      .exec();
   }
 
   async deleteById(userId: string): Promise<I_User | null> {
-    return await User.findByIdAndDelete(userId).exec();
+    return await User.findByIdAndDelete(userId).select("-password").exec();
   }
 }

@@ -8,6 +8,7 @@ const authController = new AuthController();
 authRouter.post("/", async (req, res) => {
   try {
     const { email, password } = req.body;
+
     const token = await authController.signIn(email, password);
     res.status(200).send({ status: "SUCCESS", data: token });
   } catch (err) {

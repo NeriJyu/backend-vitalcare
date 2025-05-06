@@ -2,11 +2,12 @@ import express from "express";
 import UserController from "../controllers/user.controller";
 import { handleError } from "../../utils/err.util";
 import { StatusCodeErrorEnum } from "../enums/errors.enum";
+import { authenticateToken, authorizeRole } from "../middlewares/auth.middleware";
 
 const userRouter = express.Router();
 const userController = new UserController();
 
-userRouter.get("/", async (req, res) => {
+userRouter.get("/", authenticateToken, async (req, res) => {
   try {
     const userList = await userController.getAll();
     res.status(200).send({ status: "SUCCESS", data: userList });
@@ -20,7 +21,7 @@ userRouter.get("/", async (req, res) => {
   }
 });
 
-userRouter.get("/:id", async (req, res) => {
+userRouter.get("/:id", authenticateToken, async (req, res) => {
   try {
     const user = await userController.getById(req.params.id);
     res.status(200).send({ status: "SUCCESS", data: user });
@@ -34,7 +35,7 @@ userRouter.get("/:id", async (req, res) => {
   }
 });
 
-userRouter.get("/email/:email", async (req, res) => {
+userRouter.get("/email/:email", authenticateToken, async (req, res) => {
   try {
     const user = await userController.getByEmail(req.params.email);
     res.status(200).send({ status: "SUCCESS", data: user });
@@ -48,7 +49,7 @@ userRouter.get("/email/:email", async (req, res) => {
   }
 });
 
-userRouter.post("/", async (req, res) => {
+userRouter.post("/", authenticateToken, authorizeRole("admin"), async (req, res) => {
   try {
     const createdUser = await userController.create(req.body);
     res.status(201).send({ status: "SUCCESS", data: createdUser });
@@ -62,7 +63,7 @@ userRouter.post("/", async (req, res) => {
   }
 });
 
-userRouter.put("/:id", async (req, res) => {
+userRouter.put("/:id", authenticateToken, async (req, res) => {
   try {
     const updatedUser = await userController.update(req.params.id, req.body);
     res.status(200).send({ status: "SUCCESS", data: updatedUser });
@@ -76,7 +77,7 @@ userRouter.put("/:id", async (req, res) => {
   }
 });
 
-userRouter.delete("/:id", async (req, res) => {
+userRouter.delete("/:id", authenticateToken, async (req, res) => {
   try {
     const result = await userController.delete(req.params.id);
     res.status(200).send({ status: "SUCCESS", message: result.message });

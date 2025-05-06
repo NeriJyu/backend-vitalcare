@@ -25,3 +25,10 @@ export interface I_User {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface I_UserJwtPayload {
+  _id: Types.ObjectId;
+  name: string;
+  email: string;
+  role: UserRoleEnum;
+}
