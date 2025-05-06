@@ -4,12 +4,46 @@ info:
   version: 1.0.0
   description: API for managing pediatric patient data
 
+servers:
+  - url: http://localhost:3000
+    description: Local server
+  - url: https://backend-vitalcare.onrender.com
+    description: Production server
+
 paths:
+  /api/login:
+    post:
+      summary: User login
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Auth"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCESS
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+
   /api/patient:
     get:
       summary: Fetch all patients
       tags:
         - Patient
+      security:
+        - bearerAuth: []
       responses:
         "200":
           description: List of all patients
@@ -24,39 +58,19 @@ paths:
                   data:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        name:
-                          type: string
-                        birthDate:
-                          type: string
-                          format: date
-                        responsibleRg:
-                          type: string
+                      $ref: "#/components/schemas/Patient"
     post:
       summary: Create a new patient
       tags:
         - Patient
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                birthDate:
-                  type: string
-                  format: date
-                responsibleRg:
-                  type: string
-              required:
-                - name
-                - birthDate
-                - responsibleRg
+              $ref: "#/components/schemas/PatientRequest"
       responses:
         "201":
           description: Patient created successfully
@@ -69,23 +83,15 @@ paths:
                     type: string
                     example: SUCCESS
                   data:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      name:
-                        type: string
-                      birthDate:
-                        type: string
-                        format: date
-                      responsibleRg:
-                        type: string
+                    $ref: "#/components/schemas/Patient"
 
   /api/patient/{id}:
     get:
       summary: Fetch a patient by ID
       tags:
         - Patient
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -105,23 +111,13 @@ paths:
                     type: string
                     example: SUCCESS
                   data:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      name:
-                        type: string
-                      birthDate:
-                        type: string
-                        format: date
-                      responsibleRg:
-                        type: string
-        "404":
-          description: Patient not found
+                    $ref: "#/components/schemas/Patient"
     put:
       summary: Update a patient by ID
       tags:
         - Patient
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -134,15 +130,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                birthDate:
-                  type: string
-                  format: date
-                responsibleRg:
-                  type: string
+              $ref: "#/components/schemas/PatientRequest"
       responses:
         "200":
           description: Patient updated successfully
@@ -155,23 +143,13 @@ paths:
                     type: string
                     example: SUCCESS
                   data:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      name:
-                        type: string
-                      birthDate:
-                        type: string
-                        format: date
-                      responsibleRg:
-                        type: string
-        "404":
-          description: Patient not found
+                    $ref: "#/components/schemas/Patient"
     delete:
       summary: Delete a patient by ID
       tags:
         - Patient
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -201,6 +179,8 @@ paths:
       summary: Fetch all users
       tags:
         - User
+      security:
+        - bearerAuth: []
       responses:
         "200":
           description: List of all users
@@ -222,12 +202,14 @@ paths:
       summary: Create a new user
       tags:
         - User
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
+              $ref: "#/components/schemas/UserRequest"
       responses:
         "201":
           description: User created successfully
@@ -249,6 +231,8 @@ paths:
       summary: Fetch a user by ID
       tags:
         - User
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -275,6 +259,8 @@ paths:
       summary: Update a user by ID
       tags:
         - User
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -287,7 +273,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
+              $ref: "#/components/schemas/UserRequest"
       responses:
         "200":
           description: User updated successfully
@@ -307,6 +293,8 @@ paths:
       summary: Delete a user by ID
       tags:
         - User
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -336,6 +324,8 @@ paths:
       summary: Fetch a user by email
       tags:
         - User
+      security:
+        - bearerAuth: []
       parameters:
         - name: email
           in: path
@@ -364,6 +354,8 @@ paths:
       summary: Fetch all vital data
       tags:
         - VitalData
+      security:
+        - bearerAuth: []
       responses:
         "200":
           description: List of all vital data
@@ -378,19 +370,21 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/VitalData'
+                      $ref: "#/components/schemas/VitalData"
         "500":
           description: Internal server error
     post:
       summary: Create new vital data
       tags:
         - VitalData
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VitalData'
+              $ref: "#/components/schemas/VitalDataRequest"
       responses:
         "201":
           description: Vital data created successfully
@@ -403,15 +397,16 @@ paths:
                     type: string
                     example: SUCCESS
                   data:
-                    $ref: '#/components/schemas/VitalData'
+                    $ref: "#/components/schemas/VitalData"
         "400":
           description: Bad request
-
   /api/vital/{id}:
     get:
       summary: Fetch vital data by ID
       tags:
         - VitalData
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -431,13 +426,15 @@ paths:
                     type: string
                     example: SUCCESS
                   data:
-                    $ref: '#/components/schemas/VitalData'
+                    $ref: "#/components/schemas/VitalData"
         "404":
           description: Vital data not found
     put:
       summary: Update vital data by ID
       tags:
         - VitalData
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -450,7 +447,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VitalData'
+              $ref: "#/components/schemas/VitalDataRequest"
       responses:
         "200":
           description: Vital data updated successfully
@@ -463,13 +460,15 @@ paths:
                     type: string
                     example: SUCCESS
                   data:
-                    $ref: '#/components/schemas/VitalData'
+                    $ref: "#/components/schemas/VitalData"
         "404":
           description: Vital data not found
     delete:
       summary: Delete vital data by ID
       tags:
         - VitalData
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -499,6 +498,8 @@ paths:
       summary: Fetch vital data by patient ID
       tags:
         - VitalData
+      security:
+        - bearerAuth: []
       parameters:
         - name: patientId
           in: path
@@ -520,12 +521,49 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/VitalData'
+                      $ref: "#/components/schemas/VitalData"
         "404":
           description: Vital data not found
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
+    Auth:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: "diogo3@hotmail.com"
+        password:
+          type: string
+          example: "password123"
+      required:
+        - email
+        - password
+
+    PatientRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "John Doe"
+        birthDate:
+          type: string
+          format: date
+          example: "2010-05-15"
+        responsibleRg:
+          type: string
+          example: "123456789"
+      required:
+        - name
+        - birthDate
+        - responsibleRg
+
     Patient:
       type: object
       properties:
@@ -542,10 +580,54 @@ components:
         responsibleRg:
           type: string
           example: "123456789"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-05-01T12:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2023-05-02T12:00:00Z"
       required:
+        - id
         - name
         - birthDate
         - responsibleRg
+        - createdAt
+        - updatedAt
+
+    UserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Jane Doe"
+        email:
+          type: string
+          example: "jane.doe@example.com"
+        password:
+          type: string
+          example: "hashed_password"
+        role:
+          type: string
+          example: "admin"
+        phone:
+          type: string
+          example: "+123456789"
+        cpf:
+          type: string
+          example: "12345678900"
+        rg:
+          type: string
+          example: "123456789"
+      required:
+        - name
+        - email
+        - password
+        - role
+        - phone
+        - cpf
+        - rg
 
     User:
       type: object
@@ -601,7 +683,16 @@ components:
             cep:
               type: string
               example: "10001"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-05-01T12:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2023-05-02T12:00:00Z"
       required:
+        - id
         - name
         - email
         - password
@@ -609,13 +700,12 @@ components:
         - phone
         - cpf
         - rg
+        - createdAt
+        - updatedAt
 
-    VitalData:
+    VitalDataRequest:
       type: object
       properties:
-        id:
-          type: string
-          example: "64a7b2f5e4b0c123456789ab"
         temperature:
           type: number
           example: 36.5
@@ -641,3 +731,46 @@ components:
         - hydration
         - respiration
         - patientId
+
+    VitalData:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "64a7b2f5e4b0c123456789ab"
+        temperature:
+          type: number
+          example: 36.5
+        heartRate:
+          type: number
+          example: 72
+        oxygenLevel:
+          type: number
+          example: 98
+        hydration:
+          type: number
+          example: 70
+        respiration:
+          type: number
+          example: 16
+        patientId:
+          type: string
+          example: "64a7b2f5e4b0c123456789ac"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-05-01T12:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2023-05-02T12:00:00Z"
+      required:
+        - id
+        - temperature
+        - heartRate
+        - oxygenLevel
+        - hydration
+        - respiration
+        - patientId
+        - createdAt
+        - updatedAt

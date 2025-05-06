@@ -3,6 +3,7 @@ import UserController from "../controllers/user.controller";
 import { handleError } from "../../utils/err.util";
 import { StatusCodeErrorEnum } from "../enums/errors.enum";
 import { authenticateToken, authorizeRole } from "../middlewares/auth.middleware";
+import { UserRoleEnum } from "../enums/user.enum";
 
 const userRouter = express.Router();
 const userController = new UserController();
@@ -49,7 +50,7 @@ userRouter.get("/email/:email", authenticateToken, async (req, res) => {
   }
 });
 
-userRouter.post("/", authenticateToken, authorizeRole("admin"), async (req, res) => {
+userRouter.post("/", authenticateToken, authorizeRole(UserRoleEnum.ADMIN), async (req, res) => {
   try {
     const createdUser = await userController.create(req.body);
     res.status(201).send({ status: "SUCCESS", data: createdUser });

@@ -1,5 +1,6 @@
 import { I_User } from "../../interfaces/user.interfaces";
 import { generateHash } from "../../utils/hash.util";
+import { UserRoleEnum } from "../enums/user.enum";
 import UserRepository from "../repositories/user.repository";
 
 class UserService {
@@ -41,7 +42,13 @@ class UserService {
       throw new Error("CPF is required");
     }
 
-    if (user.role === "medico") {
+    if(user.role === UserRoleEnum.NURSE || user.role === UserRoleEnum.ADMIN) {
+      if(user.crm) {
+        throw new Error("CRM does not exist for enfermeiro and admin roles");
+      }
+    }
+
+    if (user.role === UserRoleEnum.DOCTOR) {
       if (!user.crm) {
         throw new Error("CRM is required for medico role");
       }
@@ -79,7 +86,7 @@ class UserService {
       throw new Error("User already exists with this email");
     }
 
-    if (user.role === "medico") {
+    if (user.role === UserRoleEnum.DOCTOR) {
       existingUsers = await this.userRepository.findByCrm(user.crm);
 
       if (existingUsers) {
