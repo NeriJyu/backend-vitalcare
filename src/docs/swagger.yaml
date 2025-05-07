@@ -538,7 +538,7 @@ components:
         email:
           type: string
           format: email
-          example: "diogo3@hotmail.com"
+          example: "admin@vitalcare.com"
         password:
           type: string
           example: "password123"
@@ -551,14 +551,14 @@ components:
       properties:
         name:
           type: string
-          example: "John Doe"
+          example: "Matheus Plati"
         birthDate:
           type: string
           format: date
-          example: "2010-05-15"
+          example: "2020-05-15"
         responsibleRg:
           type: string
-          example: "123456789"
+          example: "123456788"
       required:
         - name
         - birthDate
@@ -601,22 +601,22 @@ components:
       properties:
         name:
           type: string
-          example: "Jane Doe"
+          example: "Diogo Cecchini"
         email:
           type: string
-          example: "jane.doe@example.com"
+          example: "diogocecchini@vitalcare.com"
         password:
           type: string
-          example: "hashed_password"
+          example: "password123"
         role:
           type: string
-          example: "admin"
+          example: "medico"
         phone:
           type: string
-          example: "+123456789"
+          example: "11912345678"
         cpf:
           type: string
-          example: "12345678900"
+          example: "12345678999"
         rg:
           type: string
           example: "123456789"
@@ -723,7 +723,7 @@ components:
           example: 16
         patientId:
           type: string
-          example: "64a7b2f5e4b0c123456789ac"
+          example: "64a7b2f5e4b0c1234j9ac"
       required:
         - temperature
         - heartRate

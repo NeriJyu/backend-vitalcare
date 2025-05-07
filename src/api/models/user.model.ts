@@ -19,9 +19,9 @@ const UserSchema = new Schema<I_User>(
     password: { type: String, required: true },
     role: { type: String, enum: Object.values(UserRoleEnum), required: true },
     phone: { type: String, required: true },
-    cpf: { type: String, required: true },
-    rg: { type: String, required: true },
-    crm: { type: String },
+    cpf: { type: String, required: true, unique: true },
+    rg: { type: String, required: true, unique: true },
+    crm: { type: String, unique: true },
     address: { type: UserAddressSchema },
   },
   {
