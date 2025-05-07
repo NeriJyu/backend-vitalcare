@@ -559,6 +559,34 @@ components:
         responsibleRg:
           type: string
           example: "123456788"
+        bloodType:
+          type: string
+          example: "O+"
+        weight:
+          type: number
+          example: 70.5
+        height:
+          type: number
+          example: 1.75
+        room:
+          type: string
+          example: "Room 101"
+        admittedAt:
+          type: string
+          format: date-time
+          example: "2023-05-01T12:00:00Z"
+        dischargedAt:
+          type: string
+          format: date-time
+          example: "2023-05-10T12:00:00Z"
+        allergies:
+          type: array
+          items:
+            type: string
+          example: ["Peanuts", "Dust"]
+        diagnosis:
+          type: string
+          example: "Asthma"
       required:
         - name
         - birthDate
@@ -580,6 +608,34 @@ components:
         responsibleRg:
           type: string
           example: "123456789"
+        bloodType:
+          type: string
+          example: "O+"
+        weight:
+          type: number
+          example: 70.5
+        height:
+          type: number
+          example: 1.75
+        room:
+          type: string
+          example: "Room 101"
+        admittedAt:
+          type: string
+          format: date-time
+          example: "2023-05-01T12:00:00Z"
+        dischargedAt:
+          type: string
+          format: date-time
+          example: "2023-05-10T12:00:00Z"
+        allergies:
+          type: array
+          items:
+            type: string
+          example: ["Peanuts", "Dust"]
+        diagnosis:
+          type: string
+          example: "Asthma"
         createdAt:
           type: string
           format: date-time

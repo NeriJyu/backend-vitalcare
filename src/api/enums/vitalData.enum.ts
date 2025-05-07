@@ -1,0 +1,21 @@
+export enum InfantAgeEnum {
+  MIN_HEART_RATE = 120,
+  MAX_HEART_RATE = 160,
+  MIN_SPO2 = 94,
+  MIN_TEMP = 36.5,
+  MAX_TEMP = 37.5,
+  MIN_HYDRATION = 75,
+  MIN_RESPIRATION = 30,
+  MAX_RESPIRATION = 60,
+}
+
+export enum ChildAgeEnum {
+  MIN_HEART_RATE = 80,
+  MAX_HEART_RATE = 120,
+  MIN_SPO2 = 96,
+  MIN_TEMP = 36,
+  MAX_TEMP = 37,
+  MIN_HYDRATION = 70,
+  MIN_RESPIRATION = 20,
+  MAX_RESPIRATION = 30,
+}

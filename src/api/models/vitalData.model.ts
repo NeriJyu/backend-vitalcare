@@ -8,6 +8,7 @@ const vitalDataSchema = new Schema<I_VitalData>(
     oxygenLevel: { type: Number, required: true },
     hydration: { type: Number, required: true },
     respiration: { type: Number, required: true },
+    isCritical: { type: Boolean, default: false, required: true },
     patientId: { type: Schema.Types.ObjectId, ref: "Patient", required: true },
   },
   {

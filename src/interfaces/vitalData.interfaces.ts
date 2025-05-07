@@ -7,6 +7,7 @@ export interface I_VitalData {
   oxygenLevel: number;
   hydration: number;
   respiration: number;
+  isCritical?: boolean;
   patientId: Types.ObjectId;
   createdAt?: Date;
   updatedAt?: Date;
