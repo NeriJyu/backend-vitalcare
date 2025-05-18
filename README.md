@@ -1,8 +1,8 @@
-# VitalCare Back-End
+# ⚕️ VitalCare Back-End
 
-## Como executar o projeto
+## How to Run the Project 🚀
 
-Para executar o projeto, siga as instruções abaixo:
+To run the project, follow the instructions below:
 
 ```
 npm install
@@ -11,16 +11,16 @@ docker-compose up -d
 npm run dev
 ```
 
-## Documentação
+## Documentation 📖
 [localhost:3000/api/docs](localhost:3000/api/docs)
 
-## Executando simulador
+## Running the Simulator ⚙️
 
-1. Para clonar o banco de dados: docker exec mongodb mongorestore /data/backup
-2. Abrir o [wokwi](https://wokwi.com/projects/429772766362621953)
-3. Executar
-4. Criar Patient
-5. Copiar ID de Patient e colocar no WokWi
-6. A cada 30 segundos os dados são salvos no MongoDB e cada 1 segundo os dados são enviados para o nosso front-end
+1. o clone the database: docker exec mongodb mongorestore /data/backup
+2. Open [wokwi](https://wokwi.com/projects/429772766362621953) 💻
+3. Run ▶️
+4. Create a Patient ➕
+5. Copy the Patient ID and paste it into WokWi 📝
+6. Every 30 seconds, data is saved to MongoDB 💾, and every 1 second, data is sent to our front-end 📤
 
-Certifique-se de ter o Node.js e Docker instalado em sua máquina antes de executar esses comandos.
+Make sure you have Node.js and Docker installed on your machine before running these commands. ✅
