@@ -30,11 +30,11 @@ export const authenticateToken = (
   }
 };
 
-export const authorizeRole = (role: string) => {
+export const authorizeRole = (roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     const user = (req as any).user;
 
-    if (!user || user.role !== role) {
+    if (!user || !roles.includes(user.role)) {
       res
         .status(StatusCodeErrorEnum.FORBIDDEN)
         .send({ status: "ERROR", message: "Access denied" });

@@ -50,7 +50,7 @@ userRouter.get("/email/:email", authenticateToken, async (req, res) => {
   }
 });
 
-userRouter.post("/", authenticateToken, authorizeRole(UserRoleEnum.ADMIN), async (req, res) => {
+userRouter.post("/", authenticateToken, authorizeRole([UserRoleEnum.ADMIN, UserRoleEnum.GENERAL]), async (req, res) => {
   try {
     const createdUser = await userController.create(req.body);
     res.status(201).send({ status: "SUCCESS", data: createdUser });
@@ -64,7 +64,7 @@ userRouter.post("/", authenticateToken, authorizeRole(UserRoleEnum.ADMIN), async
   }
 });
 
-userRouter.put("/:id", authenticateToken, async (req, res) => {
+userRouter.put("/:id", authenticateToken, authorizeRole([UserRoleEnum.ADMIN, UserRoleEnum.GENERAL]), async (req, res) => {
   try {
     const updatedUser = await userController.update(req.params.id, req.body);
     res.status(200).send({ status: "SUCCESS", data: updatedUser });
@@ -78,7 +78,7 @@ userRouter.put("/:id", authenticateToken, async (req, res) => {
   }
 });
 
-userRouter.delete("/:id", authenticateToken, async (req, res) => {
+userRouter.delete("/:id", authenticateToken, authorizeRole([UserRoleEnum.ADMIN, UserRoleEnum.GENERAL]), async (req, res) => {
   try {
     const result = await userController.delete(req.params.id);
     res.status(200).send({ status: "SUCCESS", message: result.message });
