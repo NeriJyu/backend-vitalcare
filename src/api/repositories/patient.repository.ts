@@ -1,7 +1,7 @@
 import Patient from "../models/patient.model";
 import { I_Patient } from "../../interfaces/patient.interfaces";
-import userModel from "../models/user.model";
 import UserRepository from "./user.repository";
+import { Types } from "mongoose";
 
 export default class PatientRepository {
   private userRepository = new UserRepository();
@@ -11,7 +11,7 @@ export default class PatientRepository {
     return await patient.save();
   }
 
-  async findById(patientId: string): Promise<I_Patient | null> {
+  async findById(patientId: string | Types.ObjectId): Promise<I_Patient | null> {
     return await Patient.findById(patientId).exec();
   }
 
