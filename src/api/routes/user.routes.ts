@@ -2,7 +2,10 @@ import express from "express";
 import UserController from "../controllers/user.controller";
 import { handleError } from "../../utils/err.util";
 import { StatusCodeErrorEnum } from "../enums/errors.enum";
-import { authenticateToken, authorizeRole } from "../middlewares/auth.middleware";
+import {
+  authenticateToken,
+  authorizeRole,
+} from "../middlewares/auth.middleware";
 import { UserRoleEnum } from "../enums/user.enum";
 
 const userRouter = express.Router();
@@ -50,46 +53,61 @@ userRouter.get("/email/:email", authenticateToken, async (req, res) => {
   }
 });
 
-userRouter.post("/", authenticateToken, authorizeRole([UserRoleEnum.ADMIN, UserRoleEnum.GENERAL]), async (req, res) => {
-  try {
-    const createdUser = await userController.create(req.body);
-    res.status(201).send({ status: "SUCCESS", data: createdUser });
-  } catch (err) {
-    handleError(
-      err,
-      res,
-      "An error occurred while creating the user",
-      StatusCodeErrorEnum.BAD_REQUEST
-    );
+userRouter.post(
+  "/",
+  authenticateToken,
+  authorizeRole([UserRoleEnum.ADMIN, UserRoleEnum.GENERAL]),
+  async (req, res) => {
+    try {
+      const createdUser = await userController.create(req.body);
+      res.status(201).send({ status: "SUCCESS", data: createdUser });
+    } catch (err) {
+      handleError(
+        err,
+        res,
+        "An error occurred while creating the user",
+        StatusCodeErrorEnum.BAD_REQUEST
+      );
+    }
   }
-});
+);
 
-userRouter.put("/:id", authenticateToken, authorizeRole([UserRoleEnum.ADMIN, UserRoleEnum.GENERAL]), async (req, res) => {
-  try {
-    const updatedUser = await userController.update(req.params.id, req.body);
-    res.status(200).send({ status: "SUCCESS", data: updatedUser });
-  } catch (err) {
-    handleError(
-      err,
-      res,
-      "An error occurred while updating the user",
-      StatusCodeErrorEnum.NOT_FOUND
-    );
+userRouter.put(
+  "/:id",
+  authenticateToken,
+  authorizeRole([UserRoleEnum.ADMIN, UserRoleEnum.GENERAL]),
+  async (req, res) => {
+    try {
+      const updatedUser = await userController.update(req.params.id, req.body);
+      res.status(200).send({ status: "SUCCESS", data: updatedUser });
+    } catch (err) {
+      handleError(
+        err,
+        res,
+        "An error occurred while updating the user",
+        StatusCodeErrorEnum.NOT_FOUND
+      );
+    }
   }
-});
+);
 
-userRouter.delete("/:id", authenticateToken, authorizeRole([UserRoleEnum.ADMIN, UserRoleEnum.GENERAL]), async (req, res) => {
-  try {
-    const result = await userController.delete(req.params.id);
-    res.status(200).send({ status: "SUCCESS", message: result.message });
-  } catch (err) {
-    handleError(
-      err,
-      res,
-      "An error occurred while deleting the user by ID",
-      StatusCodeErrorEnum.NOT_FOUND
-    );
+userRouter.delete(
+  "/:id",
+  authenticateToken,
+  authorizeRole([UserRoleEnum.ADMIN, UserRoleEnum.GENERAL]),
+  async (req, res) => {
+    try {
+      const result = await userController.delete(req.params.id);
+      res.status(200).send({ status: "SUCCESS", message: result.message });
+    } catch (err) {
+      handleError(
+        err,
+        res,
+        "An error occurred while deleting the user by ID",
+        StatusCodeErrorEnum.NOT_FOUND
+      );
+    }
   }
-});
+);
 
 export default userRouter;

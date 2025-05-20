@@ -23,6 +23,7 @@ const UserSchema = new Schema<I_User>(
     rg: { type: String, required: true, unique: true },
     crm: { type: String, unique: true },
     address: { type: UserAddressSchema },
+    patients: [{ type: Schema.Types.ObjectId, ref: "Patient" }],
   },
   {
     timestamps: true,

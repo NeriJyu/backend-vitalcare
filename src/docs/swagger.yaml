@@ -600,7 +600,7 @@ components:
           example: "64a7b2f5e4b0c123456789ab"
         name:
           type: string
-          example: "John Doe"
+          example: "Rodrigo Fernando"
         birthDate:
           type: string
           format: date
@@ -619,7 +619,7 @@ components:
           example: 1.75
         room:
           type: string
-          example: "Room 101"
+          example: "101"
         admittedAt:
           type: string
           format: date-time
@@ -657,10 +657,10 @@ components:
       properties:
         name:
           type: string
-          example: "Diogo Cecchini"
+          example: "Gustavo Neri"
         email:
           type: string
-          example: "diogocecchini@vitalcare.com"
+          example: "gustavoneri@vitalcare.com"
         password:
           type: string
           example: "password123"
@@ -693,10 +693,10 @@ components:
           example: "64a7b2f5e4b0c123456789ab"
         name:
           type: string
-          example: "Jane Doe"
+          example: "Example User"
         email:
           type: string
-          example: "jane.doe@example.com"
+          example: "example@example.com"
         password:
           type: string
           example: "hashed_password"
@@ -705,7 +705,7 @@ components:
           example: "admin"
         phone:
           type: string
-          example: "+123456789"
+          example: "5511951234567"
         cpf:
           type: string
           example: "12345678900"
@@ -714,13 +714,13 @@ components:
           example: "123456789"
         crm:
           type: string
-          example: "CRM12345"
+          example: "12345"
         address:
           type: object
           properties:
             street:
               type: string
-              example: "123 Main St"
+              example: "Rua das Flores"
             number:
               type: string
               example: "456"
@@ -729,16 +729,21 @@ components:
               example: "Apt 789"
             neighborhood:
               type: string
-              example: "Downtown"
+              example: "Itaquera"
             city:
               type: string
-              example: "New York"
+              example: "São Paulo"
             state:
               type: string
-              example: "NY"
+              example: "SP"
             cep:
               type: string
-              example: "10001"
+              example: "03383678"
+        patients:
+              type: array
+              items:
+              type: string
+              example: "681838e2fd906bc4b7922b53"
         createdAt:
           type: string
           format: date-time

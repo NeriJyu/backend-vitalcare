@@ -22,6 +22,7 @@ export interface I_User {
   rg: string;
   crm?: string;
   address?: I_UserAddress;
+  patients?: Types.ObjectId[];
   createdAt?: Date;
   updatedAt?: Date;
 }
