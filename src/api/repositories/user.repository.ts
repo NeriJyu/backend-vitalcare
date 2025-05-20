@@ -27,6 +27,13 @@ export default class UserRepository {
     return await User.find().select("-password").exec();
   }
 
+  async findOneAndUpdateByPatientId(patientId: string) {
+    return await User.findOneAndUpdate(
+      { patients: patientId },
+      { $pull: { patients: patientId } }
+    ).exec();
+  }
+
   async updateById(
     userId: string,
     updateData: Partial<I_User>

@@ -1,7 +1,11 @@
 import Patient from "../models/patient.model";
 import { I_Patient } from "../../interfaces/patient.interfaces";
+import userModel from "../models/user.model";
+import UserRepository from "./user.repository";
 
 export default class PatientRepository {
+  private userRepository = new UserRepository();
+
   async create(patientData: I_Patient): Promise<I_Patient> {
     const patient = new Patient(patientData);
     return await patient.save();
@@ -25,6 +29,8 @@ export default class PatientRepository {
   }
 
   async deleteById(patientId: string): Promise<I_Patient | null> {
+    await this.userRepository.findOneAndUpdateByPatientId(patientId);
+
     return await Patient.findByIdAndDelete(patientId).exec();
   }
 }
