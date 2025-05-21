@@ -1,5 +1,7 @@
 # ⚕️ VitalCare Back-End
 
+![CI](https://github.com/NeriJyu/backend-vitalcare/actions/workflows/ci.yml/badge.svg?branch=main)
+
 ## How to Run the Project 🚀
 
 To run the project, follow the instructions below:
