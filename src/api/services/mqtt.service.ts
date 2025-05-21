@@ -6,7 +6,7 @@ import PatientRepository from "../repositories/patient.repository";
 const INTERVAL_MS = 30000;
 
 class MqttService {
-  private client;
+  private client: mqtt.MqttClient;
   private vitalDataController = new VitalDataController();
   //private patientRepository = new PatientRepository();
   private buffer: I_VitalData[] = [];
