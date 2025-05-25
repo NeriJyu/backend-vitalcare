@@ -9,6 +9,7 @@ export interface I_VitalData {
   respiration: number;
   isCritical?: boolean;
   patientId: Types.ObjectId;
+  age: number;
   createdAt?: Date;
   updatedAt?: Date;
 }

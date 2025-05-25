@@ -1,14 +1,22 @@
 import mqtt from "mqtt";
 import { I_VitalData } from "../../interfaces/vitalData.interfaces";
 import VitalDataController from "../controllers/vitalData.controller";
-import PatientRepository from "../repositories/patient.repository";
+import {
+  AdolescentEnum,
+  AdultEnum,
+  InfantEnum,
+  NeonateEnum,
+  PreschoolEnum,
+  SchoolAgeEnum,
+  ToddlerEnum,
+} from "../enums/vitalData.enum";
+import { logger } from "../../utils/logger.util";
 
 const INTERVAL_MS = 30000;
 
 class MqttService {
   private client: mqtt.MqttClient;
   private vitalDataController = new VitalDataController();
-  //private patientRepository = new PatientRepository();
   private buffer: I_VitalData[] = [];
 
   constructor(brokerUrl: string) {
@@ -30,15 +38,44 @@ class MqttService {
       let data: I_VitalData = JSON.parse(message.toString());
       data.createdAt = new Date();
 
-     // const patient = await this.patientRepository.findById(data.patientId);
+      data.isCritical = this.isVitalCritical(data);
 
-      //console.log(data.createdAt);
-      //console.log(patient._id);
-      
       this.buffer.push(data);
     } catch (err) {
       console.error("Error processing MQTT message", err);
     }
+  }
+
+  private isVitalCritical(data: I_VitalData): boolean {
+    let isCritical = false;
+    const range = this.selectRange(data.patientId, data.age);
+
+    if (
+      data.heartRate < range.MIN_HEART_RATE ||
+      data.heartRate > range.MAX_HEART_RATE ||
+      data.oxygenLevel < range.MIN_SPO2 ||
+      data.temperature < range.MIN_TEMP ||
+      data.temperature > range.MAX_TEMP ||
+      data.hydration < range.MIN_HYDRATION ||
+      data.respiration < range.MIN_RESPIRATION ||
+      data.respiration > range.MAX_RESPIRATION
+    ) {
+      isCritical = true;
+    }
+
+    return isCritical;
+  }
+
+  private selectRange(patientId, ageInDays: number) {
+    if (ageInDays <= 28) return NeonateEnum;
+    if (ageInDays <= 365) return InfantEnum;
+    if (ageInDays <= 730) return ToddlerEnum;
+    if (ageInDays <= 1825) return PreschoolEnum;
+    if (ageInDays <= 4380) return SchoolAgeEnum;
+    if (ageInDays <= 5475) return AdolescentEnum;
+    if (ageInDays > 5475 && ageInDays < 21900) return AdultEnum;
+
+    logger.error("Age out of range: patientId: " + patientId);
   }
 
   private async saveBatch() {
