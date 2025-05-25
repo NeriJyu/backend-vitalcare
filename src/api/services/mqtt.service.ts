@@ -11,8 +11,16 @@ import {
   ToddlerEnum,
 } from "../enums/vitalData.enum";
 import { logger } from "../../utils/logger.util";
+import http from "http";
+import { WebSocketServer } from "ws";
 
-const INTERVAL_MS = 30000;
+const server = http.createServer();
+const wss = new WebSocketServer({ server });
+const PORT = process.env.PORT || 3000;
+
+server.listen(PORT, () => {
+  console.log(`✅ WebSocket server running on ${PORT}`);
+});
 
 class MqttService {
   private client: mqtt.MqttClient;
@@ -25,7 +33,11 @@ class MqttService {
     this.client.on("connect", this.onConnect.bind(this));
     this.client.on("message", this.onMessage.bind(this));
 
-    setInterval(this.saveBatch.bind(this), INTERVAL_MS);
+    setInterval(this.saveBatch.bind(this), 30000);
+
+    wss.on("connection", (ws) => {
+      console.log("WebSocket client connected");
+    });
   }
 
   private onConnect() {
@@ -37,10 +49,16 @@ class MqttService {
     try {
       let data: I_VitalData = JSON.parse(message.toString());
       data.createdAt = new Date();
-
       data.isCritical = this.isVitalCritical(data);
 
       this.buffer.push(data);
+
+      const payload = JSON.stringify(data);
+      wss.clients.forEach((client) => {
+        if (client.readyState === client.OPEN) {
+          client.send(payload);
+        }
+      });
     } catch (err) {
       console.error("Error processing MQTT message", err);
     }
