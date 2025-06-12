@@ -11,16 +11,10 @@ import {
   ToddlerEnum,
 } from "../enums/vitalData.enum";
 import { logger } from "../../utils/logger.util";
-import http from "http";
-import { WebSocketServer } from "ws";
+import { wss } from "../..";
 
-const server = http.createServer();
-const wss = new WebSocketServer({ server });
 const PORT = process.env.PORT || 3000;
-
-server.listen(PORT, () => {
-  console.log(`✅ WebSocket server running on ${PORT}`);
-});
+const INTERVAL_MS = 30000;
 
 class MqttService {
   private client: mqtt.MqttClient;
@@ -33,10 +27,9 @@ class MqttService {
     this.client.on("connect", this.onConnect.bind(this));
     this.client.on("message", this.onMessage.bind(this));
 
-    setInterval(this.saveBatch.bind(this), 30000);
-
+    setInterval(this.saveBatch.bind(this), INTERVAL_MS);
     wss.on("connection", (ws) => {
-      console.log("WebSocket client connected");
+      console.log("WebSocket connection established");
     });
   }
 
@@ -110,4 +103,4 @@ class MqttService {
     }
   }
 }
-export default new MqttService("mqtt://test.mosquitto.org");
+export default MqttService;
